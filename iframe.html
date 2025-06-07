@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Media Player Embed</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #e9e9e9; }
+        .iframe-wrapper { display: flex; justify-content: center; margin-top: 20px; }
+        .iframe-container {
+            width: 90%; max-width: 800px; /* Adjust as needed */
+            position: relative; padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0; overflow: hidden;
+            border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .iframe-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Testing Iframe Embed</h1>
+    <div class="iframe-wrapper">
+        <div class="iframe-container">
+            <iframe
+                src="http://localhost:5173/media-player/68345c19861b5f40e3fa284d"
+                title="Embedded Media Player"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+            >
+                Your browser does not support iframes.
+            </iframe>
+        </div>
+    </div>
+    <p style="text-align:center; margin-top:20px;">
+        Make sure your React development server (npm start) is running on port 3000.
+        <br>
+        Replace YOUR_LOCATION_ID_HERE with a valid location ID.
+    </p>
+</body>
+</html>

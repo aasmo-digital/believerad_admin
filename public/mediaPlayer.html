@@ -1,0 +1,48 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Media Player</title>
+  </head>
+  <body>
+    <h3 style="text-align:center;">🎬 Media Player</h3>
+    <div id="media-container"
+      style="text-align: center; margin-top: 20px;"></div>
+
+    <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const locationId = urlParams.get("locationId");
+
+    fetch(`http://localhost:8000/api/admin/location/${locationId}`, {
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`  // Or use sessionStorage if token is stored there
+  }
+}).then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("media-container");
+
+        if (!Array.isArray(data)) {
+          container.innerText = "No media found or bad response.";
+          return;
+        }
+
+        data.forEach(media => {
+          const wrapper = document.createElement("div");
+          wrapper.style.marginBottom = "20px";
+
+          if (media.url.endsWith(".mp4")) {
+            wrapper.innerHTML = `<video controls width="600"><source src="${media.url}" type="video/mp4"></video>`;
+          } else {
+            wrapper.innerHTML = `<img src="${media.url}" style="max-width:600px;" />`;
+          }
+
+          container.appendChild(wrapper);
+        });
+      })
+      .catch(err => {
+        document.getElementById("media-container").innerText = "Failed to load media.";
+        console.error(err);
+      });
+  </script>
+  </body>
+</html>
