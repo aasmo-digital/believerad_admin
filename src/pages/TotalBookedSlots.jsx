@@ -41,6 +41,35 @@ const TotalBookedSlots = () => {
         }
     };
 
+    function getFileType(url) {
+        if (!url) return 'View File';
+
+        const extension = url.split('.').pop().toLowerCase();
+        const iconStyle = { marginRight: '5px' };
+
+        switch (extension) {
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+                return <><i className="fas fa-image" style={iconStyle}></i> View Image</>;
+            case 'pdf':
+                return <><i className="fas fa-file-pdf" style={iconStyle}></i> View PDF</>;
+            case 'mp4':
+            case 'mov':
+            case 'avi':
+                return <><i className="fas fa-video" style={iconStyle}></i> View Video</>;
+            case 'doc':
+            case 'docx':
+                return <><i className="fas fa-file-word" style={iconStyle}></i> View Document</>;
+            case 'xls':
+            case 'xlsx':
+                return <><i className="fas fa-file-excel" style={iconStyle}></i> View Spreadsheet</>;
+            default:
+                return <><i className="fas fa-file" style={iconStyle}></i> View File</>;
+        }
+    }
+
     // Modified: fetchBookedSlots now takes the page to fetch as an argument
     // and does NOT call setPage itself.
     const fetchBookedSlots = useCallback(async (currentPage) => {
@@ -169,6 +198,7 @@ const TotalBookedSlots = () => {
                             <option value="All">All Status</option>
                             <option value="Booked">Booked</option>
                             <option value="Available">Available</option>
+                            <option value="Reserved">Reserved</option>
                         </select>
                     </div>
                     <div className="col-md-3 mb-3">
@@ -236,7 +266,8 @@ const TotalBookedSlots = () => {
                         <th>Campaign Name</th>
                         <th>Location</th>
                         <th>Slot No</th>
-                        <th>Created At</th>
+                        <th>Media</th>
+                        {/* <th>Created At</th> */}
                         <th>Slot Type</th>
                         <th>Status</th>
                     </tr>
@@ -257,9 +288,32 @@ const TotalBookedSlots = () => {
                                 <td>{item.campaignName}</td>
                                 <td>{item.location}</td>
                                 <td>Slot {item.slotIndexNumber}</td>
-                                <td>{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</td>
+                                <td>
+                                    {item.mediaFile ? (
+                                        <a
+                                            href={item.mediaFile}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{
+                                                display: 'inline-block',
+                                                padding: '4px 6px',
+                                                backgroundColor: '#f0f0f0',
+                                                borderRadius: '4px',
+                                                color: '#0066cc',
+                                                textDecoration: 'none',
+                                                // border: '1px solid #ddd'
+                                            }}
+                                        >
+                                            {getFileType(item.mediaFile)}
+                                        </a>
+                                    ) : 'N/A'}
+                                </td>
+                                {/* <td>{item.createdAt ? new Date(item.createdAt).toLocaleString() : '-'}</td> */}
                                 <td>{item.slotType}</td>
-                                <td className={item.status === 'Booked' ? 'text-danger' : 'text-success'}>
+                                <td className={
+                                    item.status === 'Booked' ? 'text-danger' :
+                                        item.status === 'Reserved' ? 'text-warning' : 'text-success'
+                                }>
                                     {item.status}
                                 </td>
                             </tr>
@@ -271,14 +325,14 @@ const TotalBookedSlots = () => {
                         </tr>
                     )}
                     {!loading && !hasMore && filteredSlots.length > 0 && (
-                         <tr>
+                        <tr>
                             <td colSpan="13" className="text-center">No more slots to load.</td>
                         </tr>
                     )}
-                     {!loading && allSlots.length === 0 && !error && (
+                    {!loading && allSlots.length === 0 && !error && (
                         <tr>
-                           <td colSpan="13" className="text-center">No slots found for the selected date.</td>
-                       </tr>
+                            <td colSpan="13" className="text-center">No slots found for the selected date.</td>
+                        </tr>
                     )}
                 </tbody>
             </table>

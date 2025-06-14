@@ -2,8 +2,8 @@
 // export const API_BASE_URL =  "http://3.82.103.193:8000/api/admin"; 
 // export const API_BASE_URL = "http://143.110.254.201:8000/api/admin";
 // export const API_BASE_URL =  "https://d277w8h3-8000.inc1.devtunnels.ms/api/admin"; 
-export const API_BASE_URL = "http://localhost:8000/api/admin";
-// export const API_BASE_URL = "https://app.believerad.space/api/admin";
+// export const API_BASE_URL = "http://localhost:8000/api/admin";
+export const API_BASE_URL = "https://app.believerad.space/api/admin";
 
 export const API_ENDPOINTS = {
   REGISTER: `${API_BASE_URL}/register`,
@@ -22,6 +22,8 @@ export const API_ENDPOINTS = {
   EXPORT_USER: `${API_BASE_URL}/export`,
 
   ASSINGED_TASK_USER: `${API_BASE_URL}/assign-task`,
+  GET_PAYMENT_REPORT: `${API_BASE_URL}/payment-report`, // Replace 'your-route' with the actual path from your Express router
+
 
   DELETE_ASSIGN_TASK: (id) => `${API_BASE_URL}/delete-assign-task/${id}`,
   GETBYID_ASSIGN_TASK: (id) => `${API_BASE_URL}/getbyid-assign-task/${id}`,

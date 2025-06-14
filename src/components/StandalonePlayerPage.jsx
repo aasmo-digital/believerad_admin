@@ -10,7 +10,7 @@ const StandalonePlayerPage = () => {
   const { slots, loading, error } = useLocationSlots(locationId);
   const [playerUrl, setPlayerUrl] = useState('');
   const [embedCode, setEmbedCode] = useState('');
-  const [copied, setCopied] = useState(false);  
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const currentUrl = window.location.href;
@@ -43,7 +43,7 @@ const StandalonePlayerPage = () => {
     backgroundColor: '#000',
     color: 'white',
     margin: 0,
-    padding: '20px 0', // Add some padding for content at top/bottom
+    // padding: '20px 0', // Add some padding for content at top/bottom
     boxSizing: 'border-box',
     overflow: 'hidden',
     fontFamily: 'Arial, sans-serif',
@@ -104,11 +104,14 @@ const StandalonePlayerPage = () => {
 
   const playerWrapperStyle = {
     width: '100%',
-    flexGrow: 1, // Takes remaining vertical space
+    maxWidth: 'calc(100vh * (9/16))', // 9:16 aspect ratio
+    margin: '0 auto', // Center horizontally
+    flexGrow: 1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 0, // Important for flex children in overflow situations
+    minHeight: 0,
+    aspectRatio: '9/16' // Explicit aspect ratio
   };
 
   const loadingErrorStyle = {

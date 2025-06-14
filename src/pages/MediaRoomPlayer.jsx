@@ -225,11 +225,29 @@ const MediaRoomPlayer = ({ slots, isContained = false }) => {
   // --- STYLES (condensed) ---
   const commonMessageStyleBase = { display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', color: '#ccc', textAlign: 'center', padding: '20px', width: '100%', height: '100%' };
   const commonMessageStyle = isContained ? commonMessageStyleBase : { ...commonMessageStyleBase, position: 'fixed', top: 0, left: 0, zIndex: 9999 };
-  const playerContainerBaseStyle = { width: '100%', height: '100%', backgroundColor: '#000', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: 'white', overflow: 'hidden', position: 'relative' };
-  const playerContainerStyle = isContained ? playerContainerBaseStyle : { ...playerContainerStyleBase, position: 'fixed', top: 0, left: 0, zIndex: 9999 };
-  const mediaElementStyle = { width: '100%', height: '100%', objectFit: 'cover', border: 'none' };
-  const infoOverlayStyle = { position: 'absolute', bottom: '20px', left: '20px', backgroundColor: 'rgba(0, 0, 0, 0.7)', padding: '10px 15px', borderRadius: '5px', color: '#fff', fontSize: '14px', maxWidth: 'calc(100% - 40px)', zIndex: 1 };
-  const mediaCountStyle = { position: 'absolute', top: '20px', right: '20px', backgroundColor: 'rgba(0, 0, 0, 0.7)', padding: '5px 10px', borderRadius: '5px', color: '#fff', fontSize: '12px', zIndex: 1 };
+  const playerContainerBaseStyle = {
+    width: '100%',
+    height: '100%',
+    maxWidth: 'calc(100vh * (9/16))', // Limit width based on height
+    maxHeight: 'calc(100vw * (16/9))', // Limit height based on width
+    margin: 'auto', // Center horizontally
+    backgroundColor: '#000',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    overflow: 'hidden',
+    position: 'relative'
+  }; const playerContainerStyle = isContained ? playerContainerBaseStyle : { ...playerContainerStyleBase, position: 'fixed', top: 0, left: 0, zIndex: 9999 };
+  const mediaElementStyle = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain', // Changed from 'cover' to 'contain' to maintain aspect ratio
+    border: 'none',
+    aspectRatio: '9/16' // Explicit aspect ratio
+  }; const infoOverlayStyle = { position: 'absolute', bottom: '2px', left: '2px', backgroundColor: 'rgba(0, 0, 0, 0.7)', padding: '5px', borderRadius: '5px', color: '#fff', fontSize: '14px', maxWidth: 'calc(100% - 40px)', zIndex: 1 };
+  const mediaCountStyle = { position: 'absolute', top: '2px', right: '2px', backgroundColor: 'rgba(0, 0, 0, 0.7)', padding: '5px 10px', borderRadius: '5px', color: '#fff', fontSize: '12px', zIndex: 1 };
 
   const DebugInfo = () => { /* ... Same as before ... */
     const [now, setNow] = useState(new Date());
@@ -274,7 +292,7 @@ const MediaRoomPlayer = ({ slots, isContained = false }) => {
             mediaType === 'embed' ? (<iframe key={currentMedia.mediaFile + "-" + currentIndex + "-" + currentMedia.startTimeDate.getTime()} ref={iframeRef} src={currentMedia.mediaFile} style={mediaElementStyle} frameBorder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowFullScreen title={currentMedia.campaignName || 'Embed'} onLoad={() => console.log(`[IFRAME] Loaded: ${String(currentMedia.mediaFile).substring(0, 50)}`)} onError={() => console.error(`[IFRAME] Error loading: ${String(currentMedia.mediaFile).substring(0, 50)}`)} />) :
               (<div style={{ ...commonMessageStyleBase, height: '100%' }}><p>Unsupported/Error: {String(currentMedia.mediaFile).substring(0, 100)}...</p><p>(Type: {mediaType}, Parsed Start: {currentMedia.startTimeDate.toLocaleTimeString()})</p></div>)
       }
-      <div style={infoOverlayStyle}><p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>{currentMedia.campaignName || 'Unnamed Media'} ({mediaType})</p><p style={{ margin: 0, fontSize: '0.9em' }}></p></div>
+      <div style={infoOverlayStyle}><p style={{ margin: '0 0 0 0', fontWeight: 'bold' }}>{currentMedia.campaignName || 'Unnamed Media'} ({mediaType})</p><p style={{ margin: 0, fontSize: '0.9em' }}></p></div>
     </div>
   );
 };

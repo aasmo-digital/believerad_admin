@@ -46,6 +46,35 @@ const AllCampaigns = ({ filterStatus = null, onDataLoaded }) => {
         fetchLocations();
     }, []);
 
+    function getFileType(url) {
+        if (!url) return 'View File';
+
+        const extension = url.split('.').pop().toLowerCase();
+        const iconStyle = { marginRight: '5px' };
+
+        switch (extension) {
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+                return <><i className="fas fa-image" style={iconStyle}></i> View Image</>;
+            case 'pdf':
+                return <><i className="fas fa-file-pdf" style={iconStyle}></i> View PDF</>;
+            case 'mp4':
+            case 'mov':
+            case 'avi':
+                return <><i className="fas fa-video" style={iconStyle}></i> View Video</>;
+            case 'doc':
+            case 'docx':
+                return <><i className="fas fa-file-word" style={iconStyle}></i> View Document</>;
+            case 'xls':
+            case 'xlsx':
+                return <><i className="fas fa-file-excel" style={iconStyle}></i> View Spreadsheet</>;
+            default:
+                return <><i className="fas fa-file" style={iconStyle}></i> View File</>;
+        }
+    }
+
     const fetchCampaigns = async () => {
         setLoading(true);
         try {
@@ -100,9 +129,9 @@ const AllCampaigns = ({ filterStatus = null, onDataLoaded }) => {
                 onDataLoaded(expandedCampaigns);
             }
             */
-           if (onDataLoaded) {
+            if (onDataLoaded) {
                 onDataLoaded(updatedData); // Pass the original filtered data
-           }
+            }
 
             setCampaigns(updatedData);
             setTotalPages(apiResponse.totalPages || 1);
@@ -230,7 +259,7 @@ const AllCampaigns = ({ filterStatus = null, onDataLoaded }) => {
                                     type="text"
                                     placeholder="Search by Client Name"
                                     value={search}
-                                    onChange={(e) => { setPage(1); setSearch(e.target.value);}}
+                                    onChange={(e) => { setPage(1); setSearch(e.target.value); }}
                                     className="form-control"
                                 />
                             </div>
@@ -239,7 +268,7 @@ const AllCampaigns = ({ filterStatus = null, onDataLoaded }) => {
                                     type="text"
                                     placeholder="Search by Campaign Name"
                                     value={campaignNameSearch}
-                                    onChange={(e) => { setPage(1); setCampaignNameSearch(e.target.value);}}
+                                    onChange={(e) => { setPage(1); setCampaignNameSearch(e.target.value); }}
                                     className="form-control"
                                 />
                             </div>
@@ -306,8 +335,21 @@ const AllCampaigns = ({ filterStatus = null, onDataLoaded }) => {
                                             <td>{item.content || item.timeslot?.campaignName || '-'}</td>
                                             <td>
                                                 {item.mediaFile ? (
-                                                    <a href={item.mediaFile} target="_blank" rel="noopener noreferrer">
-                                                        <img src={item.mediaFile} alt="Media" style={{ width: 60, height: 40, objectFit: 'cover' }} />
+                                                    <a
+                                                        href={item.mediaFile}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        style={{
+                                                            display: 'inline-block',
+                                                            padding: '4px 6px',
+                                                            backgroundColor: '#f0f0f0',
+                                                            borderRadius: '4px',
+                                                            color: '#0066cc',
+                                                            textDecoration: 'none',
+                                                            // border: '1px solid #ddd'
+                                                        }}
+                                                    >
+                                                        {getFileType(item.mediaFile)}
                                                     </a>
                                                 ) : 'N/A'}
                                             </td>
@@ -340,11 +382,11 @@ const AllCampaigns = ({ filterStatus = null, onDataLoaded }) => {
                 </div>
 
                 <div className="card-footer d-flex justify-content-center">
-                    <Pagination
+                    {/* <Pagination
                         currentPage={page}
                         totalPages={totalPages}
                         onPageChange={(newPage) => setPage(newPage)}
-                    />
+                    /> */}
                 </div>
             </div>
 

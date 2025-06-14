@@ -5,6 +5,7 @@ const ProposalTable = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    password: '',
     phone: '',
     businessName: '',
   });
@@ -28,13 +29,14 @@ const ProposalTable = () => {
       const payload = {
         fullName: formData.name,
         email: formData.email,
+        password: formData.password,
         phone: formData.phone,
         businessName: formData.businessName,
       };
 
       await addUser(payload);
       setMessage('✅ User added successfully!');
-      setFormData({ name: '', email: '', phone: '', businessName: '' });
+      setFormData({ name: '', email: '', password: '', phone: '', businessName: '' });
     } catch (err) {
       console.error("Add user error:", err);
       setError(err.message || 'Something went wrong!');
@@ -70,6 +72,19 @@ const ProposalTable = () => {
             id="email"
             name="email"
             value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Password</label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            name="password"
+            value={formData.password}
             onChange={handleChange}
             required
           />

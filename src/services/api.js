@@ -892,3 +892,23 @@ export const getUserById = async (id) => {
         return null;
     }
 };
+
+export const getPaymentReport = async (search = '') => {
+    try {
+        const response = await axios.get(API_ENDPOINTS.GET_PAYMENT_REPORT, {
+            headers: {
+                // Get the token from localStorage for authentication
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+            params: {
+                // Pass the search query to the backend
+                search: search,
+            }
+        });
+        return response.data; // The response should be { message, totalRecords, totalBudgetSum, data }
+    } catch (error) {
+        console.error("Error fetching payment report:", error.response?.data || error.message);
+        // You might want to throw the error to be caught by the component
+        throw error;
+    }
+};
